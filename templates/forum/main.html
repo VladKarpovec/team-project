@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Forum</h1>
+
+    <main>
+        {% for thread in threads %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted"> {{ thread.author.username }} </h6>
+                    <h4 class="card-title">{{ thread.title }}</h4>
+                    {% comment %}
+                        {% for tag in thread %}
+                            <span class="badge bg-secondary">{{ tag.name }}</span>
+                        {% endfor %}
+                    {% endcomment %}
+                    <p class="card-text">{{ thread.content|truncatewords:30 }}</p>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text">
+                        <small class="text-muted">Created at {{ thread.created_at|date:"d-m-Y" }}</small>
+                        <small class="text-muted">Last updated at {{ thread.updated_at|date:"d-m-Y" }}</small>
+                    </p>
+                    <p class="card-text">{{ thread.posts.count }} Comments</p>
+                    <a  class="btn btn-primary">View Thread</a>
+                </div>
+            </div>
+        {% endfor %}
+    </main>
+
+    <aside>
+        <button>Start New Discussion</button>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error repellendus laboriosam quam exercitationem temporibus? Quidem cupiditate dolor amet qui aliquam eveniet sit! Dolorem mollitia facilis dolorum, veniam temporibus dicta incidunt possimus minima eligendi illo ullam quis, labore velit repudiandae vitae aliquam laudantium? Maiores consequatur cum quasi, officia quaerat est magnam quos facilis dolor, commodi alias exercitationem, expedita culpa fugit veniam aut! Odit veniam natus nulla tenetur consequatur voluptas, ducimus, neque debitis deleniti consequuntur at obcaecati, vel minus suscipit maxime aliquid asperiores magnam praesentium unde vero nemo recusandae nihil officia. Nemo atque perferendis dolorum modi tempore quasi eaque quibusdam quaerat laborum!</p>
+    </aside>
+{% endblock %}
