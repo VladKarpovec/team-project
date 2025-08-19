@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ thread.title }}
+{% endblock %}
+
+
+{% block content %}
+    <main class="container my-4">
+        <header class="mb-4">
+            <h1>{{ thread.title }}</h1>
+            <p class="text-muted">
+                Posted by <strong>{{ thread.author.username }}</strong> on {{ thread.created_at|date:"d.m.Y" }}
+            </p>
+        </header>
+
+        {% for post in thread.posts.all %}
+            <article class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
+                        <p class="card-subtitle mb-2 text-muted small">{{ post.created_at|date:"d.m.Y H:i" }}</p>
+                    </div>
+                    <p class="card-text">{{ post.content }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </main>
+{% endblock %}

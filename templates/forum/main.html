@@ -25,16 +25,16 @@
                     <div class="card-footer">
                         <p class="card-text mb-1">
                             <small class="text-muted">
-                                Created: {{ thread.created_at|date:"d-m-Y" }}
+                                Created: {{ thread.created_at|date:"d.m.Y" }}
                             </small><br>
                             <small class="text-muted">
-                                Updated: {{ thread.updated_at|date:"d-m-Y" }}
+                                Updated: {{ thread.updated_at|date:"d.m.Y" }}
                             </small>
                         </p>
                         <p class="card-text">
                             {{ thread.posts.count }} Comments
                         </p>
-                        <a href="#" class="btn btn-primary">View Thread</a>
+                        <a href="{% url 'forum:thread' thread.id %}" class="btn btn-primary">View Thread</a>
                     </div>
                 </div>
             {% endfor %}
