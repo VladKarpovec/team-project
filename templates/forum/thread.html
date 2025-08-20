@@ -13,6 +13,21 @@
             </p>
         </header>
 
+        <div class="card mb-4 p-3">
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="content" class="form-label">Add a comment:</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="Write your comment here..."></textarea>
+                </div>
+                {% if request.user.is_authenticated %}
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                {% else %}
+                    <button type="submit" class="btn btn-secondary" disabled>Login to Comment</button>
+                {% endif %}
+            </form>
+        </div>
+
         {% if thread.posts.count == 1 %}
             <h3>1 Post:</h3>
         {% else %}
