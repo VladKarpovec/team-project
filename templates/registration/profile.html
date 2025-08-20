@@ -1,0 +1,36 @@
+{% extends "base_auth.html" %}
+{% block title %}Профіль{% endblock %}
+
+{% block content %}
+<h2>Мій профіль</h2>
+
+<div id="profile-display">
+  {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" alt="Avatar" class="img-thumbnail mb-3" style="max-width: 150px;">
+  {% endif %}
+  <p><strong>Ім'я:</strong> {{ request.user.first_name }}</p>
+  <p><strong>Прізвище:</strong> {{ request.user.last_name }}</p>
+  <p><strong>Логін:</strong> {{ request.user.username }}</p>
+  <p><strong>Email:</strong> {{ request.user.email }}</p>
+  <p><strong>Телефон:</strong> {{ profile.phone }}</p>
+  <p><strong>Біо:</strong> {{ profile.bio }}</p>
+  <p><strong>Роль:</strong> {{ profile.get_role_display }}</p>
+  <button class="btn btn-main mt-3" onclick="toggleEdit(true)">✏️ Редагувати</button>
+</div>
+
+<div id="profile-edit" style="display: none;">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-main mt-3">💾 Зберегти</button>
+    <button type="button" class="btn btn-secondary mt-2" onclick="toggleEdit(false)">❌ Скасувати</button>
+  </form>
+</div>
+
+<script>
+  function toggleEdit(showEdit) {
+    document.getElementById("profile-display").style.display = showEdit ? "none" : "block";
+    document.getElementById("profile-edit").style.display = showEdit ? "block" : "none";
+  }
+</script>
+{% endblock %}

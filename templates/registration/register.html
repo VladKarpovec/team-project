@@ -1,0 +1,53 @@
+{% extends "base_auth.html" %}
+{% block title %}Реєстрація{% endblock %}
+
+{% block content %}
+  <h2>🧙 Створення акаунту</h2>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="mb-3 text-start">
+      {{ form.first_name.label_tag }}
+      {{ form.first_name }}
+      {{ form.first_name.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.last_name.label_tag }}
+      {{ form.last_name }}
+      {{ form.last_name.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {{ form.username.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+      {{ form.email.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.password1.label_tag }}
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.password2.label_tag }}
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-main">Зареєструватися</button>
+
+    <div class="mt-3 text-center">
+      <p>Вже маєте акаунт? <a href="{% url 'login' %}" class="text-link">Увійти</a></p>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base_auth.html" %}
+{% block title %}Вхід або Реєстрація{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">👋 Ласкаво просимо!</h2>
+  <p class="mb-4">Оберіть дію, щоб продовжити:</p>
+
+  <div class="d-grid gap-3">
+    <a href="{% url 'register' %}" class="btn btn-main">📝 Зареєструватися</a>
+    <a href="{% url 'login' %}" class="btn btn-main">🔑 Увійти</a>
+  </div>
+{% endblock %}

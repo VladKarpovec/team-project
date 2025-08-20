@@ -1,0 +1,37 @@
+{% extends "base_auth.html" %}
+{% block title %}Вхід{% endblock %}
+
+{% block content %}
+  <h2>🔑 Вхід до Treking</h2>
+
+  {% if messages %}
+    <div class="mb-3">
+      {% for message in messages %}
+        <div class="alert alert-warning">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="mb-3 text-start">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {{ form.username.errors }}
+    </div>
+
+    <div class="mb-3 text-start">
+      {{ form.password.label_tag }}
+      {{ form.password }}
+      {{ form.password.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-main">Увійти</button>
+
+    <div class="mt-3 text-center">
+      <p>Немає акаунту? <a href="{% url 'register' %}" class="text-link">Зареєструватися</a></p>
+    </div>
+  </form>
+{% endblock %}
