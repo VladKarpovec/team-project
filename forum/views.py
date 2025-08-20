@@ -9,5 +9,6 @@ def thread_list(request):
 
 
 def thread_detail(request, thread_id):
-    thread = Thread.objects.get(id=thread_id)
-    return render(request, "forum/thread.html", context={"thread": thread})
+    if request.method == "GET":
+        thread = Thread.objects.get(id=thread_id)
+        return render(request, "forum/thread.html", context={"thread": thread})

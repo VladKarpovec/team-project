@@ -10,7 +10,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">
-                            {{ thread.author.username }}
+                            {{ thread.posts.first.author.username }}
                         </h6>
                         <h4 class="card-title">{{ thread.title }}</h4>
                         {% comment %}

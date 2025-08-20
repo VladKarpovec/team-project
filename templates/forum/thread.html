@@ -9,7 +9,7 @@
         <header class="card mb-4 p-3">
             <h1 class="card-title mb-2">{{ thread.title }}</h1>
             <p class="card-subtitle text-muted">
-                Posted by <strong>{{ thread.author.username }}</strong> on {{ thread.created_at|date:"d.m.Y" }}
+                Posted by <strong>{{ thread.posts.first.author.username }}</strong> on {{ thread.created_at|date:"d.m.Y" }}
             </p>
         </header>
 
