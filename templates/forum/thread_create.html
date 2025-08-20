@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Create Thread{% endblock %}
+
+{% block content %}
+    <div class="container my-4">
+        <h1 class="mb-4">Create New Thread</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Thread Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Thread</button>
+        </form>
+    </div>
+{% endblock %}
