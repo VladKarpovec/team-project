@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Головна сторінка{% endblock %}
+
+{% block content %}
+<h2>Оголошення</h2>
+<ul>
+    {% for item in announcements %}
+        <li>{{ item }}</li>
+    {% empty %}
+        <li>Немає оголошень</li>
+    {% endfor %}
+</ul>
+
+<h2>Форум</h2>
+<ul>
+    {% for topic in forum_topics %}
+        <li>{{ topic }}</li>
+    {% empty %}
+        <li>Немає тем</li>
+    {% endfor %}
+</ul>
+
+<h2>Майбутні події</h2>
+<ul>
+    {% for event in upcoming_events %}
+        <li>{{ event }}</li>
+    {% empty %}
+        <li>Немає запланованих подій</li>
+    {% endfor %}
+</ul>
+
+<h2>Статистика</h2>
+<ul>
+    <li>Учасників: {{ stats.members }}</li>
+    <li>Подій цього місяця: {{ stats.events_this_month }}</li>
+    <li>Нових постів: {{ stats.new_posts }}</li>
+</ul>
+{% endblock %}
