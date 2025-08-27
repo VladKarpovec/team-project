@@ -49,6 +49,22 @@ def create_thread(request):
         return redirect("forum:thread", thread_id=thread.id)
 
 
+
+
 def announcement_list(request):
-    announcements = Announcement.objects.all()
-    return render(request, 'announcements/list.html', {'announcements': announcements})
+    announcements = Announcement.objects.order_by('-created_at')
+    return render(request, 'forum/announcement_list.html', {'announcements': announcements})
+
+def announcement_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+
+        if title and description:
+            Announcement.objects.create(title=title, description=description)
+            return redirect('forum:announcement_list')
+        else:
+            error = "Будь ласка, заповніть усі поля."
+            return render(request, 'forum/announcement_create.html', {'error': error})
+
+    return render(request, 'forum/announcement_create.html')

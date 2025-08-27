@@ -2,6 +2,12 @@
 
 {% block content %}
   <h2>Оголошення</h2>
+
+  <a href="{% url 'forum:announcement_create' %}
+" class="btn btn-primary" style="margin-bottom: 15px;">
+     Створити оголошення
+  </a>
+
   <ul>
     {% for announcement in announcements %}
       <li>
