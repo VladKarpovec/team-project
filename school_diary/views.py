@@ -38,5 +38,5 @@ def scores(request, subject_id, class_id):
         "dates": dates,
         "grade_dict": grade_dict,
     }
-    print(students)
+    
     return render(request, "school_diary/scores_table.html", context=context)
