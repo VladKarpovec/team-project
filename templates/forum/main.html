@@ -2,56 +2,42 @@
 {% block title %}Forum{% endblock %}
 
 {% block content %}
-<div class="container my-4">
+<div class="container my-5">
     <div class="row justify-content-between">
         <h1 class="mb-4">Forum</h1>
-        <main class="col-md-9">
+        <main class="col-lg-8">
             {% for thread in threads %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            {{ thread.posts.first.author.username }}
-                        </h6>
-                        <h4 class="card-title">{{ thread.title }}</h4>
-                        {% comment %}
-                            {% for tag in thread %}
-                                <span class="badge bg-secondary">{{ tag.name }}</span>
-                            {% endfor %}
-                        {% endcomment %}
-                        <p class="card-text">
-                            {{ thread.posts.first.content|truncatewords:30 }}
-                        </p>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title mb-1">{{ thread.title }}</h5>
+                            <small class="text-muted">by {{ thread.posts.first.author.username }} • {{ thread.created_at|date:"d.m.Y" }}</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-secondary">{{ thread.posts.count }} Comments</span>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <p class="card-text mb-1">
-                            <small class="text-muted">
-                                Created: {{ thread.created_at|date:"d.m.Y" }}
-                            </small><br>
-                            <small class="text-muted">
-                                Updated: {{ thread.updated_at|date:"d.m.Y" }}
-                            </small>
-                        </p>
-                        <p class="card-text">
-                            {{ thread.posts.count }} Comments
-                        </p>
-                        <a href="{% url 'forum:thread' thread.id %}" class="btn btn-primary">View Thread</a>
-                    </div>
+                    <p class="card-text mt-2">{{ thread.posts.first.content|truncatewords:30 }}</p>
+                    <a href="{% url 'forum:thread' thread.id %}" class="btn btn-sm btn-primary">View Thread</a>
                 </div>
+            </div>
             {% endfor %}
         </main>
 
-        <aside class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <form method="get" action="{% url 'forum:create_thread' %}">   
-                        {% csrf_token %}
-                        {% if request.user.is_authenticated %}
-                            <button class="w-100 mb-3" type="submit">Start New Discussion</button>
-                        {% else %}
-                            <button class="w-100 mb-3" type="submit" disabled>Login to Start Discussion</button>
-                        {% endif %}
-                    </form>
-                    <p class="text-muted small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti soluta, quam minus temporibus et incidunt impedit obcaecati adipisci corporis dolorem voluptates odit recusandae sunt earum distinctio eum quas iure, aliquid magnam similique rerum? Laboriosam voluptatem asperiores molestiae voluptate officiis laudantium corporis deserunt maxime alias eaque amet id error quisquam reiciendis ipsam, quasi non, possimus quo. Ducimus nisi veritatis ratione cupiditate doloribus dicta expedita quos quae quia corporis ab itaque, fuga vel numquam dignissimos eaque obcaecati blanditiis esse harum? Praesentium adipisci maxime itaque veniam sed odit modi vero sapiente obcaecati blanditiis inventore consequuntur corporis, quisquam, numquam quaerat reprehenderit perspiciatis beatae voluptatum! Ullam eaque quaerat cumque tempore et voluptatibus veniam possimus obcaecati a impedit architecto odit ea animi vel harum fugiat, sequi excepturi inventore assumenda aut dicta, quae labore ut unde! Architecto eum velit soluta perspiciatis excepturi doloribus minus dolor esse odit?</p>
+        <aside class="col-lg-4">
+            <div class="card p-3 shadow-sm mb-4">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'forum:create_thread' %}" class="btn btn-primary w-100 mb-3">Start New Discussion</a>
+                {% else %}
+                <button class="btn btn-secondary w-100 mb-3" disabled>Login to Start Discussion</button>
+                {% endif %}
+                <div class="d-flex flex-column gap-2">
+                    <a href="#" class="text-decoration-none text-muted">All Discussions</a>
+                    <a href="#" class="text-decoration-none text-muted">Following</a>
+                    <a href="#" class="text-decoration-none text-muted">Introductions</a>
+                    <a href="#" class="text-decoration-none text-muted">Announcements</a>
+                    <a href="#" class="text-decoration-none text-muted">Feedback</a>
                 </div>
             </div>
         </aside>
