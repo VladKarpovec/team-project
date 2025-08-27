@@ -35,7 +35,7 @@ class Student(models.Model):
 
 
 class Grade(models.Model):
-    SCORE_CHOICES = [(i, i) for i in range(1, 11)].append("H")
+    SCORE_CHOICES = [(i, i) for i in range(1, 13)] + [("H", "H")]
 
     student = models.ForeignKey(
         Student, related_name="grades", on_delete=models.CASCADE
