@@ -1,49 +1,73 @@
 {% extends 'base.html' %}
-{% block title %}
-    {{ thread.title }}
-{% endblock %}
-
+{% block title %}{{ thread.title }}{% endblock %}
 
 {% block content %}
-    <main class="container my-4">
-        <header class="card mb-4 p-3">
-            <h1 class="card-title mb-2">{{ thread.title }}</h1>
-            <p class="card-subtitle text-muted">
-                Posted by <strong>{{ thread.posts.first.author.username }}</strong> on {{ thread.created_at|date:"d.m.Y" }}
-            </p>
-        </header>
-
-        <div class="card mb-4 p-3">
-            <form method="post" action="">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="content" class="form-label">Add a comment:</label>
-                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="Write your comment here..."></textarea>
+<main class="container my-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h2 class="card-title mb-1">{{ thread.title }}</h2>
+                    <p class="text-muted small mb-0">
+                        Created by <strong>{{ thread.posts.first.author.username }}</strong> 
+                        · {{ thread.created_at|date:"d.m.Y" }}
+                    </p>
                 </div>
+                
+                {% if can_manage %}
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary"
+                            onclick="document.getElementById('edit-title-form').classList.toggle('d-none')">
+                        ✏️
+                    </button>
+                    <form action="{% url 'forum:thread_delete' thread.id %}" method="post" 
+                          onsubmit="return confirm('Точно видалити цю гілку?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">🗑</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            <form id="edit-title-form" class="d-none mt-3" action="{% url 'forum:thread_edit' thread.id %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="title" value="{{ thread.title }}" class="form-control">
+                    <button class="btn btn-primary" type="submit">💾 Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <label for="content" class="form-label">Add a comment:</label>
+                <textarea class="form-control mb-3" id="content" name="content" rows="3"
+                          placeholder="Write your comment here..."></textarea>
                 {% if request.user.is_authenticated %}
                     <button type="submit" class="btn btn-primary">Post Comment</button>
                 {% else %}
-                    <button type="submit" class="btn btn-secondary" disabled>Login to Comment</button>
+                    <button class="btn btn-secondary" disabled>Login to Comment</button>
                 {% endif %}
             </form>
         </div>
+    </div>
 
-        {% if thread.posts.count == 1 %}
-            <h3>1 Post:</h3>
-        {% else %}
-            <h3>{{thread.posts.count}} Posts:</h3>
-        {% endif %}
+    <h4 class="mb-3">{{ thread.posts.count }} {{ thread.posts.count|pluralize:"Post,Posts" }}</h4>
 
-        {% for post in thread.posts.all %}
-            <article class="card mb-3 mx-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="card-subtitle mb-2 text-muted">{{ post.author.username }}</h6>
-                        <p class="card-subtitle mb-2 text-muted small">{{ post.created_at|date:"d.m.Y H:i" }}</p>
-                    </div>
-                    <p class="card-text">{{ post.content }}</p>
-                </div>
-            </article>
-        {% endfor %}
-    </main>
+    {% for post in thread.posts.all %}
+    <div class="card shadow-sm mb-3 ms-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h6 class="mb-1">{{ post.author.username }}</h6>
+                <span class="text-muted small">{{ post.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+            <p class="card-text mt-2">{{ post.content }}</p>
+        </div>
+    </div>
+    {% endfor %}
+
+</main>
 {% endblock %}
