@@ -21,6 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('main.urls')),
     path('register/', include('auth_system.urls')),
     path("forum/", include("forum.urls", namespace="forum")),
 ]
