@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Thread, Post
-
+from django.shortcuts import render
+from .models import Announcement
 
 # Create your views here.
 def thread_list(request):
@@ -46,3 +47,8 @@ def create_thread(request):
             is_first=True,
         )
         return redirect("forum:thread", thread_id=thread.id)
+
+
+def announcement_list(request):
+    announcements = Announcement.objects.all()
+    return render(request, 'announcements/list.html', {'announcements': announcements})
