@@ -2,15 +2,22 @@ from django.db import models
 
 
 # Create your models here.
-class Classroom(models.Model):
-    name = models.CharField(max_length=4)
+class Subject(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
 
 
-class Subject(models.Model):
-    name = models.CharField(max_length=50)
+class Classroom(models.Model):
+    name = models.CharField(max_length=4)
+    subjects = models.ManyToManyField(Subject, related_name="classrooms")
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
