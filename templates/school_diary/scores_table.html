@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load dict_get_item %}
+{% block title %}Оцінки {{ classroom.name }} класу з {{ subject.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Оцінки {{ classroom.name }} класу з предмету "{{ subject.name }}"</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Учень</th>
+                    {% for date in dates %}
+                        <th>{{ date }}</th>
+                    {% endfor %}
+                    <th>Додати оцінку</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td class="text-start">{{ student.first_name }} {{ student.last_name }}</td>
+                        {% for date in dates %}
+                            <td>
+                                {{ grade_dict|get_item:student|get_item:date|default:"-" }}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <a href="" class="btn btn-sm btn-primary">+</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
