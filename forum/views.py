@@ -89,3 +89,17 @@ def delete_thread(request, thread_id):
         return redirect("forum:main")
 
     return redirect("forum:thread", thread_id=thread.id)
+
+
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    thread = post.thread
+
+    if not (can_manage_thread(request.user, thread) or request.user == post.author):
+        return redirect("forum:thread", thread_id=thread.id)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect("forum:thread", thread_id=thread.id)
+
+    return redirect("forum:thread", thread_id=thread.id)
