@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Опитування</h2>
+
+  {% if request.user.is_staff %}
+    <a href="{% url 'voting:create_poll' %}" class="btn btn-success mb-3">+ Створити опитування</a>
+  {% endif %}
+
+  <ul class="list-group">
+    {% for poll in polls %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'poll_detail' poll.id %}">{{ poll.question }}</a>
+        <span class="badge bg-primary">{{ poll.choices.count }} варіантів</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">Наразі немає опитувань.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

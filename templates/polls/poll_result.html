@@ -1,0 +1,16 @@
+<!-- polls/poll_results.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Результати: {{ poll.question }}</h2>
+  <ul class="list-group">
+    {% for choice_text, count in results.items %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ choice_text }}
+        <span class="badge bg-info">{{ count }} голосів</span>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'poll_detail' poll.id %}" class="btn btn-outline-primary mt-3">Назад до голосування</a>
+</div>
+{% endblock %}
