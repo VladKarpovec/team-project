@@ -121,3 +121,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+media_items = [
+    {'is_image': True, 'file': {'url': '/media/image1.jpg'}, 'title': 'Image 1'},
+    {'is_video': True, 'file': {'url': '/media/video1.mp4'}, 'title': 'Video 1'},
+]

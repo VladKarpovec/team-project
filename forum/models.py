@@ -48,3 +48,24 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+class GalleryImage(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='gallery/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class MediaItem(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='media/')
+    is_image = models.BooleanField(default=False)
+    is_video = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        ext = self.file.name.lower().split('.')[-1]
+        self.is_image = ext in ['jpg', 'jpeg', 'png', 'gif']
+        self.is_video = ext in ['mp4', 'webm', 'ogg']
+        super().save(*args, **kwargs)

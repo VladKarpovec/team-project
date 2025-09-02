@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Завантажити медіа{% endblock %}
+
+{% block content %}
+  <h2 style="color: #eee;">Завантажити фото або відео</h2>
+
+  <form method="post" enctype="multipart/form-data" style="max-width: 500px; background-color: #222; padding: 20px; border-radius: 8px;">
+    {% csrf_token %}
+    <div style="margin-bottom: 15px;">
+      <label for="id_title" style="color: #ccc;">Назва:</label><br>
+      {{ form.title }}
+    </div>
+    <div style="margin-bottom: 15px;">
+      <label for="id_file" style="color: #ccc;">Файл:</label><br>
+      {{ form.file }}
+    </div>
+    <button type="submit" style="padding: 10px 20px; background-color: #555; color: #fff; border: none; border-radius: 5px;">
+       Завантажити
+    </button>
+  </form>
+
+  <div style="margin-top: 20px;">
+    <a href="{% url 'gallery' %}" style="color: #aaa;">← Назад до галереї</a>
+  </div>
+{% endblock %}

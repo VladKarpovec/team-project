@@ -23,4 +23,5 @@ urlpatterns = [
     path("forum/", include("forum.urls", namespace="forum")),
 
 
+
 ]
