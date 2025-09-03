@@ -1,4 +1,4 @@
-{% extends "base_auth.html" %}
+{% extends "base.html" %}
 {% block title %}Профіль{% endblock %}
 
 {% block content %}
@@ -15,8 +15,9 @@
   <p><strong>Телефон:</strong> {{ profile.phone }}</p>
   <p><strong>Біо:</strong> {{ profile.bio }}</p>
   <p><strong>Роль:</strong> {{ profile.get_role_display }}</p>
-  <button class="btn btn-main mt-3" onclick="toggleEdit(true)">✏️ Редагувати</button>
+  <button class="btn btn-main mt-3" onclick="toggleEdit(true)"> Редагувати</button>
 </div>
+<a href="{% url 'register:logout' %}" class="btn btn-danger">Вийти</a>
 
 <div id="profile-edit" style="display: none;">
   <form method="POST" enctype="multipart/form-data">

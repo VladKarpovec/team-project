@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Редагувати голосування: {{ poll.question }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h4 class="mt-4">Існуючі варіанти</h4>
+    {% for choice in choices %}
+      <input type="text" name="choices" class="form-control mb-2" value="{{ choice.text }}" placeholder="Варіант {{ forloop.counter }}">
+    {% endfor %}
+
+    <h4 class="mt-4">Додати нові варіанти</h4>
+    {% for i in "1234" %}
+      <input type="text" name="choices" class="form-control mb-2" placeholder="Новий варіант {{ forloop.counter }}">
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary mt-3">Зберегти зміни</button>
+  </form>
+</div>
+{% endblock %}
