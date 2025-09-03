@@ -8,12 +8,12 @@ from django.contrib import messages
 from .form import PollForm
 def poll_list(request):
     polls = Poll.objects.all()
-    return render(request, "polls/poll_list.html", {"polls": polls})
+    return render(request, "voting/poll_list.html", {"voting": polls})
 
 
 def poll_detail(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
-    return render(request, "polls/poll_detail.html", {"poll": poll})
+    return render(request, "voting/poll_detail.html", {"poll": poll})
 
 
 @login_required
@@ -33,7 +33,7 @@ def poll_results(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
     votes = Vote.objects.filter(poll=poll)
     results = {choice.text: votes.filter(choice=choice).count() for choice in poll.choices.all()}
-    return render(request, "polls/poll_results.html", {"poll": poll, "results": results})
+    return render(request, "voting/poll_results.html", {"poll": poll, "results": results})
 
 
 @staff_member_required
@@ -44,7 +44,7 @@ def create_poll(request):
 
         if not question or not any(choices):
             messages.error(request, "Питання та хоча б один варіант обов'язкові.")
-            return render(request, "polls/poll_create.html")
+            return render(request, "voting/poll_create.html")
 
         poll = Poll.objects.create(
             question=question,
@@ -57,7 +57,7 @@ def create_poll(request):
         messages.success(request, "Опитування створено успішно.")
         return redirect("voting:poll_list")
 
-    return render(request, "polls/poll_create.html")
+    return render(request, "voting/poll_create.html")
 
 
 @staff_member_required
@@ -91,7 +91,7 @@ def edit_poll(request, poll_id):
     else:
         form = PollForm(instance=poll)
 
-    return render(request, "polls/poll_edit.html", {
+    return render(request, "voting/poll_edit.html", {
         "form": form,
         "choices": choices,
         "poll": poll,

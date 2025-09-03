@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'forum',
     'auth_system',
+    'main',
+    'voting',
 ]
 
 MIDDLEWARE = [

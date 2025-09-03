@@ -21,7 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),
+    path("", include('main.urls', namespace="home")),
     path('register/', include('auth_system.urls', namespace="register")),
     path("forum/", include("forum.urls", namespace="forum")),
     path("voting/", include("voting.urls", namespace="voting")),
