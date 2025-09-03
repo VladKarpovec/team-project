@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "forum",
     "auth_system",
     "school_diary",
+    "main",
+    "voting",
 ]
 
 MIDDLEWARE = [
