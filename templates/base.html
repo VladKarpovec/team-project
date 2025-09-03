@@ -10,17 +10,27 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Хедер -->
-    <header class="bg-primary text-white py-3 shadow">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h1 class="h4 mb-0">Шось там сайт</h1>
-            <nav>
-                <a href="{% url 'main:home' %}" class="text-white me-3 text-decoration-none">Головна</a>
-                <a href="{% url 'forum:main' %}" class="text-white me-3 text-decoration-none">Форум</a>
-                <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
-                <a href="{% url 'register:profile' %}" class="text-white me-3 text-decoration-none">Профіль</a>
-            </nav>
-        </div>
-    </header>
+        <header class="bg-primary text-white py-3 shadow">
+            <div class="container d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">Шось там сайт</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="{% url 'main:home' %}" class="text-white me-3 text-decoration-none">Головна</a>
+                    <a href="{% url 'forum:main' %}" class="text-white me-3 text-decoration-none">Форум</a>
+                    <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
+                    <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
+
+                    {% if request.user.is_authenticated %}
+                        <span class="me-3">👤 {{ request.user.username }}</span>
+                        <form method="post" action="{% url 'register:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light btn-sm">Вийти</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'register:login' %}" class="btn btn-light btn-sm">Увійти</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
 
     <main class="container my-4 flex-grow-1">
         {% block content %}

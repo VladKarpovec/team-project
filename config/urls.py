@@ -25,4 +25,5 @@ urlpatterns = [
     path('register/', include('auth_system.urls', namespace="register")),
     path("forum/", include("forum.urls", namespace="forum")),
     path("voting/", include("voting.urls", namespace="voting")),
+    path("portfolio/", include("portfolio.urls", namespace="portfolio")),
 ]

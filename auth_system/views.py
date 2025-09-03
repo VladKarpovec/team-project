@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, ProfileUpdateForm
+from .forms import CustomUserCreationForm
 from .models import Profile
 
 def home_auth(request):
@@ -24,7 +24,7 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
-            return redirect("register:profile")
+            return redirect("main:home")
         else:
             messages.error(request, "Невірний логін або пароль")
     else:
@@ -32,21 +32,6 @@ def user_login(request):
     return render(request, "registration/login.html", {"form": form})
 
 
-@login_required
-def profile_view(request):
-    # Створюємо профіль якщо його немає
-    profile, created = Profile.objects.get_or_create(user=request.user)
-
-    if request.method == "POST":
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "✅ Профіль оновлено")
-            return redirect("register:profile")
-    else:
-        form = ProfileUpdateForm(instance=profile)
-
-    return render(request, "registration/profile.html", {"form": form, "profile": profile})
 
 
 def logout_view(request):

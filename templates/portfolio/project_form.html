@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ form.instance.pk|yesno:"Редагування проєкту,Створення проєкту" }}{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ form.instance.pk|yesno:"Редагувати проєкт,Створити новий проєкт" }}</h2>
+
+<form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}
+        <div class="form-text">{{ field.help_text }}</div>
+      {% endif %}
+      {% for error in field.errors %}
+        <div class="text-danger small">{{ error }}</div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+  <a href="{% url 'portfolio:project_list' %}" class="btn btn-secondary">↩️ Назад</a>
+</form>
+{% endblock %}

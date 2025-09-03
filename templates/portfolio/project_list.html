@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Мої проєкти{% endblock %}
+{% block content %}
+<h2 class="mb-4">Мої проєкти</h2>
+<a href="{% url 'portfolio:project_create' %}" class="btn btn-success mb-3">➕ Додати проєкт</a>
+
+{% for project in projects %}
+  <div class="card mb-4 shadow-sm">
+    {% if project.screenshot %}
+      <img src="{{ project.screenshot.url }}" class="card-img-top" alt="Скріншот">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ project.title }}</h5>
+      <p class="card-text">{{ project.description|linebreaks }}</p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if project.link %}
+          <a href="{{ project.link }}" class="btn btn-outline-primary" target="_blank">🔗 Перейти</a>
+        {% endif %}
+        {% if project.file %}
+          <a href="{{ project.file.url }}" class="btn btn-outline-secondary">📎 Завантажити файл</a>
+        {% endif %}
+        <a href="{% url 'portfolio:project_update' project.pk %}" class="btn btn-warning">✏️ Редагувати</a>
+        <a href="{% url 'portfolio:project_delete' project.pk %}" class="btn btn-danger">🗑️ Видалити</a>
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <p>У вас ще немає проєктів. Почніть з <a href="{% url 'portfolio:project_create' %}">додавання першого</a>.</p>
+{% endfor %}
+{% endblock %}

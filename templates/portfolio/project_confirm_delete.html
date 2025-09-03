@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Видалити проєкт{% endblock %}
+{% block content %}
+<h2 class="mb-4 text-danger">Видалити проєкт</h2>
+<div class="alert alert-warning">
+  Ви справді хочете видалити проєкт <strong>{{ project.title }}</strong>? Цю дію не можна скасувати.
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">🗑️ Так, видалити</button>
+  <a href="{% url 'portfolio:project_list' %}" class="btn btn-secondary">↩️ Скасувати</a>
+</form>
+{% endblock %}

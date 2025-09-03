@@ -20,13 +20,3 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
-class ProfileUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ("avatar", "phone", "bio", "role")
-        labels = {
-            "avatar": "Аватар",
-            "phone": "Телефон",
-            "bio": "Біо",
-            "role": "Роль",
-        }
