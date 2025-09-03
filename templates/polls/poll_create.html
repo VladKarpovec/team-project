@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Створити нове опитування</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="question" class="form-label">Питання</label>
+      <input type="text" name="question" id="question" class="form-control" required>
+    </div>
+
+    <label class="form-label">Варіанти відповіді</label>
+    {% for i in "1234" %}
+      <input type="text" name="choices" class="form-control mb-2" placeholder="Варіант {{ forloop.counter }}">
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Створити</button>
+  </form>
+</div>
+{% endblock %}
