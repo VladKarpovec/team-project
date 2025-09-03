@@ -27,7 +27,14 @@
                             </td>
                         {% endfor %}
                         <td>
-                            <a href="" class="btn btn-sm btn-primary">+</a>
+                            <button 
+                                class="btn btn-sm btn-primary" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#addGradeModal" 
+                                data-student="{{ student.id }}"
+                                data-name="{{ student.first_name }} {{ student.last_name }}">
+                                +
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -35,4 +42,20 @@
         </table>
     </div>
 </div>
+{% include 'school_diary/add_grade.html' %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('addGradeModal');
+        modal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var studentId = button.getAttribute('data-student');
+            var studentName = button.getAttribute('data-name');
+
+            var form = document.getElementById('addGradeForm');
+            form.action = "{% url 'diary:add_grade' subject.id classroom.id 0 %}".replace("0", studentId);
+
+            document.getElementById('studentName').textContent = studentName;
+        });
+    });
+</script>
 {% endblock %}
