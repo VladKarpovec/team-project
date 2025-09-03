@@ -14,8 +14,9 @@
         <a href="{% url 'voting:poll_detail' poll.id %}">{{ poll.question }}</a>
         <span class="badge bg-primary">{{ poll.choices.count }} варіантів</span>
         {% if user.is_superuser %}
-        <a href="{% url 'voting:delete_poll' poll.id %}" class="btn btn-danger">Видалити</a>
-      {% endif %}
+                <a href="{% url 'voting:edit_poll' poll.id %}" class="btn btn-warning">Редагувати</a>
+                <a href="{% url 'voting:delete_poll' poll.id %}" class="btn btn-danger">Видалити</a>
+        {% endif %}
       </li>
     {% empty %}
       <li class="list-group-item">Наразі немає опитувань.</li>

@@ -5,6 +5,7 @@ from .models import Poll, Choice, Vote
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
+from .form import PollForm
 def poll_list(request):
     polls = Poll.objects.all()
     return render(request, "polls/poll_list.html", {"polls": polls})
@@ -65,3 +66,33 @@ def delete_poll(request, poll_id):
     poll.delete()
     return redirect("voting:poll_list")
 
+
+@staff_member_required
+def edit_poll(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    choices = poll.choices.all()
+
+    if request.method == "POST":
+        form = PollForm(request.POST, instance=poll)
+        new_choices = request.POST.getlist("choices")
+
+        if form.is_valid():
+            form.save()
+
+            poll.choices.all().delete()
+
+            for text in new_choices:
+                text = text.strip()
+                if text:
+                    Choice.objects.create(poll=poll, text=text)
+
+            return redirect("voting:poll_list")
+
+    else:
+        form = PollForm(instance=poll)
+
+    return render(request, "polls/poll_edit.html", {
+        "form": form,
+        "choices": choices,
+        "poll": poll,
+    })
