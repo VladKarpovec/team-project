@@ -6,9 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 def poll_list(request):
-    poll = Poll.objects.create(
-        created_by=request.user
-    )
+    polls = Poll.objects.all()
     return render(request, "polls/poll_list.html", {"polls": polls})
 
 
@@ -27,7 +25,7 @@ def vote(request, poll_id, choice_id):
         poll=poll, user=request.user,
         defaults={"choice": choice}
     )
-    return redirect("poll_results", poll_id=poll.id)
+    return redirect("voting:poll_results", poll_id=poll.id)
 
 
 def poll_results(request, poll_id):
@@ -47,12 +45,23 @@ def create_poll(request):
             messages.error(request, "Питання та хоча б один варіант обов'язкові.")
             return render(request, "polls/poll_create.html")
 
-        poll = Poll.objects.create(question=question)
+        poll = Poll.objects.create(
+            question=question,
+            created_by=request.user
+        )
         for choice_text in choices:
             if choice_text.strip():
                 Choice.objects.create(poll=poll, text=choice_text.strip())
 
         messages.success(request, "Опитування створено успішно.")
-        return redirect("poll_list")
+        return redirect("voting:poll_list")
 
     return render(request, "polls/poll_create.html")
+
+
+@staff_member_required
+def delete_poll(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    poll.delete()
+    return redirect("voting:poll_list")
+

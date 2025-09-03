@@ -7,10 +7,10 @@
     {% for choice in poll.choices.all %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ choice.text }}
-        <a href="{% url 'vote' poll.id choice.id %}" class="btn btn-outline-success btn-sm">Голосувати</a>
+        <a href="{% url 'voting:vote' poll.id choice.id %}" class="btn btn-outline-success btn-sm">Голосувати</a>
       </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'poll_results' poll.id %}" class="btn btn-secondary">Переглянути результати</a>
+  <a href="{% url 'voting:poll_results' poll.id %}" class="btn btn-secondary">Переглянути результати</a>
 </div>
 {% endblock %}

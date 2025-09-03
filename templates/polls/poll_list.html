@@ -9,9 +9,13 @@
 
   <ul class="list-group">
     {% for poll in polls %}
+
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'poll_detail' poll.id %}">{{ poll.question }}</a>
+        <a href="{% url 'voting:poll_detail' poll.id %}">{{ poll.question }}</a>
         <span class="badge bg-primary">{{ poll.choices.count }} варіантів</span>
+        {% if user.is_superuser %}
+        <a href="{% url 'voting:delete_poll' poll.id %}" class="btn btn-danger">Видалити</a>
+      {% endif %}
       </li>
     {% empty %}
       <li class="list-group-item">Наразі немає опитувань.</li>
