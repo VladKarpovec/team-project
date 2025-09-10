@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Створити оголошення</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="title">Заголовок</label>
+      <input type="text" name="title" id="title" class="form-control" value="">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Опис</label>
+      <textarea name="description" id="description" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a href="{% url 'announcements:announcement_list' %}" class="btn btn-secondary">Назад</a>
+  </form>
+{% endblock %}

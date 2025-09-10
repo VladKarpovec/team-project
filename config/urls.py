@@ -26,4 +26,6 @@ urlpatterns = [
     path("forum/", include("forum.urls", namespace="forum")),
     path("voting/", include("voting.urls", namespace="voting")),
     path("portfolio/", include("portfolio.urls", namespace="portfolio")),
-]
+    path("", include("announcements.urls", namespace="announcements")),
+    path('gallery/', include('gallery.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

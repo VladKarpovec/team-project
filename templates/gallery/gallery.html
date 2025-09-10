@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Галерея</title>
+  <style>
+    body {
+      background-color: ;
+      color: #000000;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    .drop-zone {
+      border: 2px dashed ;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      background-color: ;
+      transition: background 0.3s ease;
+    }
+
+    .drop-zone.dragover {
+      background-color: #2c2c2c;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .preview img,
+    .preview video {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .gallery-item {
+      width: 300px;
+      background-color: #1e1e1e;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .gallery-item p {
+      color: #ccc;
+      margin-top: 8px;
+    }
+
+    .delete-button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Завантажити медіа</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label class="drop-zone" id="drop-zone">
+      Перетягни файли сюди або натисни для вибору
+      <input type="file" name="media_file" id="file-input" multiple>
+    </label>
+    <button type="submit">Завантажити</button>
+  </form>
+
+  <div class="preview" id="preview"></div>
+
+  <h2 style="margin-top: 50px;">Галерея</h2>
+  <div class="gallery-grid">
+    {% for media in media_items %}
+      <div class="gallery-item">
+        {% if media.is_image %}
+          <img src="{{ media.file.url }}" alt="{{ media.title }}" style="width: 100%; height: auto; border-radius: 4px;">
+        {% elif media.is_video %}
+          <video controls style="width: 100%; border-radius: 4px;">
+            <source src="{{ media.file.url }}" type="video/mp4">
+            Ваш браузер не підтримує відео.
+          </video>
+        {% endif %}
+        <p>{{ media.title }}</p>
+        <form method="POST" action="{% url 'gallery:delete_media' media.id %}">
+          {% csrf_token %}
+          <button type="submit" class="delete-button">Видалити</button>
+        </form>
+      </div>
+    {% empty %}
+      <p style="color: #aaa;">Немає медіа у галереї.</p>
+    {% endfor %}
+  </div>
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const preview = document.getElementById('preview');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      fileInput.files = e.dataTransfer.files;
+      showPreview(fileInput.files);
+    });
+
+    fileInput.addEventListener('change', () => {
+      showPreview(fileInput.files);
+    });
+
+    function showPreview(files) {
+      preview.innerHTML = '';
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          let media;
+          if (file.type.startsWith('image')) {
+            media = document.createElement('img');
+          } else if (file.type.startsWith('video')) {
+            media = document.createElement('video');
+            media.controls = true;
+          } else {
+            return;
+          }
+          media.src = reader.result;
+          preview.appendChild(media);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>

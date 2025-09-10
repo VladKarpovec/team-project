@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Оголошення</h2>
+
+  <a href="{% url 'announcements:announcement_create' %}" class="btn btn-primary" style="margin-bottom: 15px;">
+     Створити оголошення
+  </a>
+
+  <ul>
+    {% for announcement in announcements %}
+      <li>
+        <strong>{{ announcement.title }}</strong><br>
+        {{ announcement.description }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
