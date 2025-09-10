@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Додати медіа{% endblock %}
+
+{% block content %}
+  <h2>Додати нове медіа</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="file">Оберіть файл:</label>
+    <input type="file" id="file" name="file">
+    <button type="submit">Завантажити</button>
+  </form>
+
+  <!-- Кнопка вийти -->
+  <div style="margin-top: 20px;">
+    
+  </div>
+{% endblock %}
