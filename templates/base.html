@@ -19,8 +19,8 @@
                     <a href="{% url 'voting:voting_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
                     <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
                     <a href="{% url 'polls:survey_list' %}" class="text-white me-3 text-decoration-none">Опитування</a>
-                    <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
-                    <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
+                    <a href="{% url 'gallery:gallery' %}" class="text-white me-3 text-decoration-none">Галерея</a>
+                    <a href="{% url 'announcements:announcement_list' %}" class="text-white me-3 text-decoration-none">Оголошення</a>
                     <a href="{% url 'diary:subjects' %}" class="text-white me-3 text-decoration-none">Щоденник</a>
 
                     {% if request.user.is_authenticated %}
