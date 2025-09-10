@@ -18,6 +18,7 @@
                 <a href="{% url 'forum:main' %}" class="text-white me-3 text-decoration-none">Форум</a>
                 <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
                 <a href="{% url 'register:profile' %}" class="text-white me-3 text-decoration-none">Профіль</a>
+                <a href="{% url 'diary:subjects' %}" class="text-white me-3 text-decoration-none">Щоденник</a>
             </nav>
         </div>
     </header>
@@ -36,5 +37,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>

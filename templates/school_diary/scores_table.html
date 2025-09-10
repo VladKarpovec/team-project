@@ -22,9 +22,18 @@
                     <tr>
                         <td class="text-start">{{ student.first_name }} {{ student.last_name }}</td>
                         {% for date in dates %}
-                            <td>
-                                {{ grade_dict|get_item:student|get_item:date|default:"-" }}
-                            </td>
+                            {% with grade=grade_dict|get_item:student|get_item:date %}
+                                <td style="cursor: pointer;" 
+                                    onclick="openGradeModal(
+                                        '{{ student.id }}', 
+                                        '{{ student.first_name }} {{ student.last_name }}',
+                                        '{{ grade.score|default:"" }}',
+                                        '{{ grade.id|default:"" }}',
+                                        '{{ date|date:"Y-m-d" }}'
+                                    )">
+                                    {{ grade|default:"-" }}
+                                </td>
+                            {% endwith %}
                         {% endfor %}
                         <td>
                             <button 
@@ -43,6 +52,8 @@
     </div>
 </div>
 {% include 'school_diary/add_grade.html' %}
+{% endblock %}
+{% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var modal = document.getElementById('addGradeModal');
@@ -57,5 +68,22 @@
             document.getElementById('studentName').textContent = studentName;
         });
     });
+
+    function openGradeModal(studentId, studentName, currentScore, gradeId, date) {
+    document.getElementById('studentName').textContent = studentName;
+    document.getElementById('score').value = currentScore;
+    document.getElementById('date').value = date;
+    
+    var gradeIdElement = document.getElementById('gradeId');
+    if (gradeIdElement) {
+        gradeIdElement.value = gradeId;
+    }
+    
+    var form = document.getElementById('addGradeForm');
+    form.action = "{% url 'diary:add_grade' subject.id classroom.id 0 %}".replace("0", studentId);
+    
+    var modal = new bootstrap.Modal(document.getElementById('addGradeModal'));
+    modal.show();
+}
 </script>
 {% endblock %}
