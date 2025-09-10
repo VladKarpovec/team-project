@@ -8,12 +8,12 @@ from django.contrib import messages
 from .form import PollForm
 def poll_list(request):
     polls = Poll.objects.all()
-    return render(request, "voting/poll_list.html", {"voting": polls})
+    return render(request, "voting/voting_list.html", {"polls": polls})
 
 
 def poll_detail(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
-    return render(request, "voting/poll_detail.html", {"poll": poll})
+    return render(request, "voting/voting_detail.html", {"poll": poll})
 
 
 @login_required
@@ -26,14 +26,14 @@ def vote(request, poll_id, choice_id):
         poll=poll, user=request.user,
         defaults={"choice": choice}
     )
-    return redirect("voting:poll_results", poll_id=poll.id)
+    return redirect("voting:voting_results", poll_id=poll.id)
 
 
 def poll_results(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
     votes = Vote.objects.filter(poll=poll)
     results = {choice.text: votes.filter(choice=choice).count() for choice in poll.choices.all()}
-    return render(request, "voting/poll_results.html", {"poll": poll, "results": results})
+    return render(request, "voting/voting_results.html", {"poll": poll, "results": results})
 
 
 @staff_member_required
@@ -44,7 +44,7 @@ def create_poll(request):
 
         if not question or not any(choices):
             messages.error(request, "Питання та хоча б один варіант обов'язкові.")
-            return render(request, "voting/poll_create.html")
+            return render(request, "voting/voting_create.html")
 
         poll = Poll.objects.create(
             question=question,
@@ -55,16 +55,16 @@ def create_poll(request):
                 Choice.objects.create(poll=poll, text=choice_text.strip())
 
         messages.success(request, "Опитування створено успішно.")
-        return redirect("voting:poll_list")
+        return redirect("voting:voting_list")
 
-    return render(request, "voting/poll_create.html")
+    return render(request, "voting/voting_create.html")
 
 
 @staff_member_required
 def delete_poll(request, poll_id):
     poll = get_object_or_404(Poll, id=poll_id)
     poll.delete()
-    return redirect("voting:poll_list")
+    return redirect("voting:voting_list")
 
 
 @staff_member_required
@@ -86,12 +86,12 @@ def edit_poll(request, poll_id):
                 if text:
                     Choice.objects.create(poll=poll, text=text)
 
-            return redirect("voting:poll_list")
+            return redirect("voting:voting_list")
 
     else:
         form = PollForm(instance=poll)
 
-    return render(request, "voting/poll_edit.html", {
+    return render(request, "voting/voting_edit.html", {
         "form": form,
         "choices": choices,
         "poll": poll,

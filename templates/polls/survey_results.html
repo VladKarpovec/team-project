@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Результати: {{ survey.title }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Результати опитування: {{ survey.title }}</h2>
+
+{% if responses %}
+    <ul class="list-group">
+        {% for response in responses %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ response.user.username }}
+                <a href="{% url 'polls:response_detail' survey.id response.user.id %}" class="btn btn-sm btn-outline-primary">Переглянути відповіді</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-muted">Ще ніхто не пройшов це опитування.</p>
+{% endif %}
+{% endblock %}

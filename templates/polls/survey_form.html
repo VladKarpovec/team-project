@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Конструктор опитування{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{% if form.instance.pk %}Редагувати{% else %}Створити{% endif %} опитування</h2>
+
+<form method="post" id="survey-form">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Назва опитування</label>
+        {{ form.title }}
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Опис</label>
+        {{ form.description }}
+    </div>
+
+    <hr>
+    <h4>Питання</h4>
+    <div id="questions-container"></div>
+
+    <button type="button" class="btn btn-outline-primary mb-3" onclick="addQuestion()">➕ Додати питання</button>
+    <br>
+    <button type="submit" class="btn btn-success">💾 Зберегти опитування</button>
+</form>
+
+<script>
+let questionIndex = 0;
+
+// Автозаповнення при редагуванні
+{% if form.instance.pk %}
+    {% for question in form.instance.questions.all %}
+        addQuestionPrefilled(
+            `{{ question.text|escapejs }}`,
+            `{{ question.question_type }}`,
+            `{% for choice in question.choices.all %}{{ choice.text|escapejs }}\n{% endfor %}`.trim()
+        );
+    {% endfor %}
+{% endif %}
+
+function addQuestion() {
+    addQuestionPrefilled("", "text", "");
+}
+
+function addQuestionPrefilled(text, type, options) {
+    const container = document.getElementById("questions-container");
+    const questionId = `question-${questionIndex}`;
+    const html = `
+        <div class="card mb-3 p-3" id="${questionId}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div style="flex-grow:1">
+                    <div class="mb-2">
+                        <label>Текст питання</label>
+                        <input type="text" name="question_${questionIndex}_text" class="form-control" required value="${text}">
+                    </div>
+                    <div class="mb-2">
+                        <label>Тип питання</label>
+                        <select name="question_${questionIndex}_type" class="form-select" onchange="toggleOptions(this, ${questionIndex})">
+                            <option value="text" ${type === "text" ? "selected" : ""}>Текстова відповідь</option>
+                            <option value="radio" ${type === "radio" ? "selected" : ""}>Один варіант</option>
+                            <option value="checkbox" ${type === "checkbox" ? "selected" : ""}>Кілька варіантів</option>
+                        </select>
+                    </div>
+                    <div class="mb-2" id="options_${questionIndex}" style="display: ${type === "text" ? "none" : "block"};">
+                        <label>Варіанти відповіді (по одному на рядок)</label>
+                        <textarea name="question_${questionIndex}_options" class="form-control" rows="3">${options}</textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-3 mt-1" onclick="removeQuestion('${questionId}')">🗑</button>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML("beforeend", html);
+    questionIndex++;
+}
+
+function toggleOptions(select, index) {
+    const optionsDiv = document.getElementById(`options_${index}`);
+    optionsDiv.style.display = (select.value === "text") ? "none" : "block";
+}
+
+function removeQuestion(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+}
+</script>
+{% endblock %}
