@@ -1,7 +1,7 @@
 from django import forms
-from .models import MediaItem
+from .models import Media
 
 class MediaUploadForm(forms.ModelForm):
     class Meta:
-        model = MediaItem
+        model = Media
         fields = ['title', 'file']

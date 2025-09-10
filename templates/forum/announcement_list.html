@@ -3,8 +3,7 @@
 {% block content %}
   <h2>Оголошення</h2>
 
-  <a href="{% url 'forum:announcement_create' %}
-" class="btn btn-primary" style="margin-bottom: 15px;">
+  <a href="{% url 'announcements:announcement_create' %}" class="btn btn-primary" style="margin-bottom: 15px;">
      Створити оголошення
   </a>
 
@@ -14,8 +13,6 @@
         <strong>{{ announcement.title }}</strong><br>
         {{ announcement.description }}
       </li>
-    {% empty %}
-      <li>Немає оголошень на даний момент.</li>
     {% endfor %}
   </ul>
 {% endblock %}
