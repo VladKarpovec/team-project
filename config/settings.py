@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'portfolio',
     'announcements',
     'gallery',
-
-
+    "school_diary",
 ]
 
 MIDDLEWARE = [
