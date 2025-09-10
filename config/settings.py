@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'main',
     'voting',
     'portfolio',
+    'polls',
 ]
 
 MIDDLEWARE = [

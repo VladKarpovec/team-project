@@ -1,4 +1,4 @@
-<!-- voting/poll_results.html -->
+<!-- voting/voting_results.html -->
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-4">
@@ -11,6 +11,6 @@
       </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'voting:poll_detail' poll.id %}" class="btn btn-outline-primary mt-3">Назад до голосування</a>
+  <a href="{% url 'voting:voting_detail' poll.id %}" class="btn btn-outline-primary mt-3">Назад до голосування</a>
 </div>
 {% endblock %}

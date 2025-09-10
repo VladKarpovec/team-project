@@ -4,18 +4,18 @@
   <h2>Опитування</h2>
 
   {% if request.user.is_staff %}
-    <a href="{% url 'voting:create_poll' %}" class="btn btn-success mb-3">+ Створити опитування</a>
+    <a href="{% url 'voting:create_voting' %}" class="btn btn-success mb-3">+ Створити опитування</a>
   {% endif %}
 
   <ul class="list-group">
     {% for poll in polls %}
 
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{% url 'voting:poll_detail' poll.id %}">{{ poll.question }}</a>
+        <a href="{% url 'voting:voting_detail' poll.id %}">{{ poll.question }}</a>
         <span class="badge bg-primary">{{ poll.choices.count }} варіантів</span>
         {% if user.is_superuser %}
-                <a href="{% url 'voting:edit_poll' poll.id %}" class="btn btn-warning">Редагувати</a>
-                <a href="{% url 'voting:delete_poll' poll.id %}" class="btn btn-danger">Видалити</a>
+                <a href="{% url 'voting:edit_voting' poll.id %}" class="btn btn-warning">Редагувати</a>
+                <a href="{% url 'voting:delete_voting' poll.id %}" class="btn btn-danger">Видалити</a>
         {% endif %}
       </li>
     {% empty %}
