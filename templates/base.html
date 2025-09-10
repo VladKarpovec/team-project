@@ -19,6 +19,10 @@
                     <a href="{% url 'voting:voting_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
                     <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
                     <a href="{% url 'polls:survey_list' %}" class="text-white me-3 text-decoration-none">Опитування</a>
+                    <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
+                    <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
+                    <a href="{% url 'diary:subjects' %}" class="text-white me-3 text-decoration-none">Щоденник</a>
+
                     {% if request.user.is_authenticated %}
                         <span class="me-3">👤 {{ request.user.username }}</span>
                         <form method="post" action="{% url 'register:logout' %}">
@@ -46,5 +50,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

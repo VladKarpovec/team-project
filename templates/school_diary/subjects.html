@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Оберіть предмет{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <h1 class="mb-4">Оберіть предмет</h1>
+        <div class="list-group">
+            {% for subject in subjects %}
+                <a href="{% url 'diary:classes' subject.id %}" class="list-group-item list-group-item-action">
+                    {{ subject.name }}
+                </a>
+            {% empty %}
+                <p class="text-muted">Немає доступних предметів.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
