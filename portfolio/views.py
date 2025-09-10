@@ -3,10 +3,16 @@ from .models import Project
 from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required
 
-@login_required
 def project_list(request):
-    projects = Project.objects.filter(owner=request.user)
-    return render(request, "portfolio/project_list.html", {"projects": projects})
+    if request.user.is_authenticated:
+        projects = Project.objects.filter(owner=request.user)
+    else:
+        projects = Project.objects.none()  # або показати всі, якщо це публічна галерея
+
+    return render(request, "portfolio/project_list.html", {
+        "projects": projects
+    })
+
 
 @login_required
 def project_create(request):

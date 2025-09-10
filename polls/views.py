@@ -28,11 +28,14 @@ def is_moderator_or_admin(user):
     return profile and profile.role in ("admin", "manager")
 
 
-@login_required
 def survey_list(request):
     surveys = Survey.objects.all()
-    responses = Response.objects.filter(user=request.user)
-    responded_ids = set(r.survey_id for r in responses)
+    responded_ids = set()
+
+    if request.user.is_authenticated:
+        responses = Response.objects.filter(user=request.user)
+        responded_ids = set(r.survey_id for r in responses)
+
     return render(request, "polls/survey_list.html", {
         "surveys": surveys,
         "responded_ids": responded_ids,
