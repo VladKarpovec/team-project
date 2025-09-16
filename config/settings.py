@@ -134,6 +134,7 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+LOGIN_URL = 'login'
 
 media_items = [
     {'is_image': True, 'file': {'url': '/media/image1.jpg'}, 'title': 'Image 1'},

@@ -10,7 +10,7 @@ app_name = "announcements"
 
 
 urlpatterns = [
-    path("announcements/", views.announcement_list, name="announcement_list"),
+    path("announcements/", views.announcement_list, name="list"),
     path("announcements/create/", views.announcement_create, name="announcement_create"),
 
 

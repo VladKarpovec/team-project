@@ -10,6 +10,7 @@ urlpatterns = [
     path('gallery/upload/', views.media_upload_view, name='media_upload'),
     path('delete/<int:media_id>/', views.delete_media_view, name='delete_media'),
 
+
 ]
 
 if settings.DEBUG:
