@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}📅 Календар подій{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ month_name }} {{ year }}</h2>
+    <div class="d-flex flex-wrap gap-2">
+        {% if month > 1 %}
+            <a href="{% url 'events:event_calendar_month' year month|add:'-1' %}" class="btn btn-outline-secondary btn-sm">◀ Попередній</a>
+        {% else %}
+            <a href="{% url 'events:event_calendar_month' year|add:'-1' 12 %}" class="btn btn-outline-secondary btn-sm">◀ Попередній</a>
+        {% endif %}
+
+        {% if month < 12 %}
+            <a href="{% url 'events:event_calendar_month' year month|add:'1' %}" class="btn btn-outline-secondary btn-sm">Наступний ▶</a>
+        {% else %}
+            <a href="{% url 'events:event_calendar_month' year|add:'1' 1 %}" class="btn btn-outline-secondary btn-sm">Наступний ▶</a>
+        {% endif %}
+
+        <a href="{% url 'events:event_list' %}" class="btn btn-outline-primary btn-sm">📋 Список подій</a>
+
+        {% if request.user.is_staff %}
+            <a href="{% url 'events:event_create' %}" class="btn btn-primary btn-sm">➕ Створити подію</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered text-center align-middle shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th class="bg-light">Сб</th><th class="bg-light">Нд</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week in weeks %}
+            <tr>
+                {% for day in week %}
+                <td class="align-top p-2 {% if day.date == today %}bg-warning-subtle border-warning{% elif day.date.month != month %}bg-light text-muted{% endif %}">
+                    <div class="fw-semibold mb-1">{{ day.date.day }}</div>
+                    {% for event in day.events %}
+                        <a href="{% url 'events:event_detail' event.pk %}"
+                           class="badge bg-info-subtle text-dark d-block mb-1 text-truncate"
+                           title="{{ event.description }}">
+                            {{ event.title }}
+                        </a>
+                    {% empty %}
+                        <span class="text-muted small">—</span>
+                    {% endfor %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

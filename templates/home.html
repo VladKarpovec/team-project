@@ -4,47 +4,65 @@
 {% block content %}
 <div class="row g-4">
 
-    <!-- Оголошення -->
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-info text-white">Оголошення</div>
-            <div class="card-body">
-                {% for item in announcements %}
-                    <p>{{ item }}</p>
-                {% empty %}
-                    <p class="text-muted">Немає нових оголошень.</p>
-                {% endfor %}
-            </div>
-        </div>
+  <!-- Оголошення -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-info text-white">Оголошення</div>
+      <div class="card-body">
+        {% for item in announcements %}
+          <p><strong>{{ item.title }}</strong>: {{ item.description|truncatewords:15 }}</p>
+        {% empty %}
+          <p class="text-muted">Немає нових оголошень.</p>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 
-    <!-- Форум -->
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-secondary text-white">Форум</div>
-            <div class="card-body">
-                {% for topic in forum_topics %}
-                    <p>{{ topic }}</p>
-                {% empty %}
-                    <p class="text-muted">Поки що немає тем.</p>
-                {% endfor %}
-            </div>
-        </div>
+  <!-- Форум -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">Форум</div>
+      <div class="card-body">
+        {% for topic in forum_topics %}
+          <p><a href="{% url 'forum:thread' topic.id %}">{{ topic.title }}</a>/p>
+        {% empty %}
+          <p class="text-muted">Поки що немає тем.</p>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 
-    <!-- Статистика -->
-    <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white">Статистика</div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Учасників: {{ stats.members }}</li>
-                    <li class="list-group-item">Подій цього місяця: {{ stats.events_this_month }}</li>
-                    <li class="list-group-item">Нових постів: {{ stats.new_posts }}</li>
-                </ul>
-            </div>
-        </div>
+  <!-- Події -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">Найближчі події</div>
+      <div class="card-body">
+        {% for event in upcoming_events %}
+          <p title="{{ event.description }}">
+            📅 {{ event.date }} — <strong>{{ event.title }}</strong>
+          </p>
+        {% empty %}
+          <p class="text-muted">Немає запланованих подій.</p>
+        {% endfor %}
+      </div>
     </div>
+  </div>
+
+
+
+  <!-- Статистика -->
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark text-white">Статистика</div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Учасників: {{ stats.members }}</li>
+          <li class="list-group-item">Подій цього місяця: {{ stats.events_this_month }}</li>
+          <li class="list-group-item">Нових постів: {{ stats.new_posts }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock %}

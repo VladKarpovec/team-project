@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} матеріал{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        {% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} матеріал
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success mt-2">Зберегти</button>
+            <a href="{% url 'materials:material_list' %}" class="btn btn-secondary mt-2">Назад</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

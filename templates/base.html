@@ -9,18 +9,21 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Хедер -->
-        <header class="bg-primary text-white py-3 shadow">
-            <div class="container d-flex justify-content-between align-items-center">
-                <h1 class="h4 mb-0">Шось там сайт</h1>
-                <nav class="d-flex align-items-center">
-                    <a href="{% url 'main:home' %}" class="text-white me-3 text-decoration-none">Головна</a>
-                    <a href="{% url 'forum:main' %}" class="text-white me-3 text-decoration-none">Форум</a>
-                    <a href="{% url 'voting:poll_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
-                    <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
-                    <a href="{% url 'gallery:gallery' %}" class="text-white me-3 text-decoration-none">Галерея</a>
-                    <a href="{% url 'announcements:list' %}" class="text-white me-3 text-decoration-none">Оголошення</a>
-
+  <!-- Хедер -->
+  <header class="py-3 shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="h4 mb-0 text-white"><i class="bi bi-stars"></i> Шось там сайт</h1>
+      <nav class="d-flex align-items-center gap-3">
+        <a href="{% url 'main:home' %}" class="text-white text-decoration-none">Головна</a>
+        <a href="{% url 'forum:main' %}" class="text-white text-decoration-none">Форум</a>
+        <a href="{% url 'voting:voting_list' %}" class="text-white text-decoration-none">Голосування</a>
+        <a href="{% url 'portfolio:project_list' %}" class="text-white text-decoration-none">Портфоліо</a>
+        <a href="{% url 'polls:survey_list' %}" class="text-white text-decoration-none">Опитування</a>
+        <a href="{% url 'gallery:gallery' %}" class="text-white text-decoration-none">Галерея</a>
+        <a href="{% url 'announcements:announcement_list' %}" class="text-white text-decoration-none">Оголошення</a>
+        <a href="{% url 'diary:subjects' %}" class="text-white text-decoration-none">Щоденник</a>
+        <a href="{% url 'events:event_list' %}" class="text-white text-decoration-none">Події</a>
+        <a href="{% url 'materials:material_list' %}" class="text-white text-decoration-none">Матеріали</a>
 
                     {% if request.user.is_authenticated %}
                         <span class="me-3">👤 {{ request.user.username }}</span>

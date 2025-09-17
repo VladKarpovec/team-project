@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Мої проєкти{% endblock %}
+
 {% block content %}
 <h2 class="mb-4">Мої проєкти</h2>
-<a href="{% url 'portfolio:project_create' %}" class="btn btn-success mb-3">➕ Додати проєкт</a>
+
+{% if request.user.is_authenticated %}
+  <a href="{% url 'portfolio:project_create' %}" class="btn btn-success mb-3">➕ Додати проєкт</a>
+{% else %}
+  <div class="alert alert-warning mb-3">
+    🔒 Вам варто <a href="{% url 'register:login' %}">увійти</a> або <a href="{% url 'register:register' %}">зареєструватися</a>, щоб створити портфоліо.
+  </div>
+{% endif %}
 
 {% for project in projects %}
   <div class="card mb-4 shadow-sm">
@@ -12,6 +20,7 @@
     <div class="card-body">
       <h5 class="card-title">{{ project.title }}</h5>
       <p class="card-text">{{ project.description|linebreaks }}</p>
+
       <div class="d-flex flex-wrap gap-2">
         {% if project.link %}
           <a href="{{ project.link }}" class="btn btn-outline-primary" target="_blank">🔗 Перейти</a>
@@ -19,12 +28,16 @@
         {% if project.file %}
           <a href="{{ project.file.url }}" class="btn btn-outline-secondary">📎 Завантажити файл</a>
         {% endif %}
-        <a href="{% url 'portfolio:project_update' project.pk %}" class="btn btn-warning">✏️ Редагувати</a>
-        <a href="{% url 'portfolio:project_delete' project.pk %}" class="btn btn-danger">🗑️ Видалити</a>
+
+        {% if request.user.is_authenticated and project.owner == request.user %}
+          <a href="{% url 'portfolio:project_update' project.pk %}" class="btn btn-warning">✏️ Редагувати</a>
+          <a href="{% url 'portfolio:project_delete' project.pk %}" class="btn btn-danger">🗑️ Видалити</a>
+        {% endif %}
       </div>
     </div>
   </div>
-{% empty %}
+
   <p>У вас ще немає проєктів. Почніть з <a href="{% url 'portfolio:project_create' %}">додавання першого</a>.</p>
+{% empty %}
 {% endfor %}
 {% endblock %}

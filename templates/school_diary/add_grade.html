@@ -1,0 +1,35 @@
+<div class="modal fade" id="addGradeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="addGradeForm">
+        {% csrf_token %}
+        <input type="hidden" name="grade_id" id="gradeId" value="">
+        <div class="modal-header">
+          <h5 class="modal-title">Додати оцінку</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="studentName" class="fw-bold"></p>
+
+          <div class="mb-3">
+            <label for="score" class="form-label">Оцінка</label>
+            <select name="score" id="score" class="form-select" required>
+              {% for grade in grade_choices %}
+                <option value="{{ grade }}">{{ grade }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="date" class="form-label">Дата</label>
+            <input type="date" name="date" id="date" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+          <button type="submit" class="btn btn-success">Зберегти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

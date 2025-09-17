@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Відповіді користувача{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Відповіді {{ response.user.username }} на «{{ survey.title }}»</h2>
+
+<ul class="list-group">
+    {% for answer in answers %}
+        <li class="list-group-item">
+            <strong>{{ answer.question.text }}</strong><br>
+
+            {% if answer.text_answer %}
+                {{ answer.text_answer }}
+            {% elif answer.choice %}
+                {{ answer.choice.text }}
+            {% else %}
+                <em>Немає відповіді</em>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

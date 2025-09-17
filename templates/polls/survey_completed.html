@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Опитування пройдено{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">✅ Ви успішно пройшли опитування «{{ survey.title }}»</h2>
+
+<div class="d-flex gap-3">
+    <a href="{% url 'polls:survey_detail' survey.id %}" class="btn btn-outline-primary">🔁 Перепройти</a>
+    <a href="{% url 'polls:survey_list' %}" class="btn btn-outline-secondary">🏠 На головну опитувань</a>
+</div>
+{% endblock %}
