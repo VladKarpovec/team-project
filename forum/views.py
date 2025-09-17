@@ -4,7 +4,11 @@ from .models import Thread, Post
 
 # Create your views here.
 def thread_list(request):
-    threads = Thread.objects.all()
+    tag = request.GET.get("tag")
+    if tag:
+        threads = Thread.objects.filter(tag=tag)
+    else:
+        threads = Thread.objects.all()
     return render(request, "forum/main.html", context={"threads": threads})
 
 
