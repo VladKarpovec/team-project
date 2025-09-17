@@ -7,50 +7,51 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-light">
 
   <!-- Хедер -->
-  <header class="py-3 shadow">
+  <header class="py-3 border-bottom bg-white">
     <div class="container d-flex justify-content-between align-items-center">
-      <h1 class="h4 mb-0 text-white"><i class="bi bi-stars"></i> Шось там сайт</h1>
-      <nav class="d-flex align-items-center gap-3">
-        <a href="{% url 'main:home' %}" class="text-white text-decoration-none">Головна</a>
-        <a href="{% url 'forum:main' %}" class="text-white text-decoration-none">Форум</a>
-        <a href="{% url 'voting:voting_list' %}" class="text-white text-decoration-none">Голосування</a>
-        <a href="{% url 'portfolio:project_list' %}" class="text-white text-decoration-none">Портфоліо</a>
-        <a href="{% url 'polls:survey_list' %}" class="text-white text-decoration-none">Опитування</a>
-        <a href="{% url 'gallery:gallery' %}" class="text-white text-decoration-none">Галерея</a>
-        <a href="{% url 'announcements:announcement_list' %}" class="text-white text-decoration-none">Оголошення</a>
-        <a href="{% url 'diary:subjects' %}" class="text-white text-decoration-none">Щоденник</a>
-        <a href="{% url 'events:event_list' %}" class="text-white text-decoration-none">Події</a>
-        <a href="{% url 'materials:material_list' %}" class="text-white text-decoration-none">Матеріали</a>
+      <h1 class="h4 mb-0 text-dark"><i class="bi bi-stars"></i> Шось там сайт</h1>
+      <nav class="d-flex align-items-center gap-2">
+        <a href="{% url 'main:home' %}" class="btn btn-primary btn-sm">Головна</a>
+        <a href="{% url 'forum:main' %}" class="btn btn-primary btn-sm">Форум</a>
+        <a href="{% url 'voting:voting_list' %}" class="btn btn-primary btn-sm">Голосування</a>
+        <a href="{% url 'portfolio:project_list' %}" class="btn btn-primary btn-sm">Портфоліо</a>
+        <a href="{% url 'polls:survey_list' %}" class="btn btn-primary btn-sm">Опитування</a>
+        <a href="{% url 'gallery:gallery' %}" class="btn btn-primary btn-sm">Галерея</a>
+        <a href="{% url 'announcements:announcement_list' %}" class="btn btn-primary btn-sm">Оголошення</a>
+        <a href="{% url 'diary:subjects' %}" class="btn btn-primary btn-sm">Щоденник</a>
+        <a href="{% url 'events:event_list' %}" class="btn btn-primary btn-sm">Події</a>
+        <a href="{% url 'materials:material_list' %}" class="btn btn-primary btn-sm">Матеріали</a>
 
-                    {% if request.user.is_authenticated %}
-                        <span class="me-3">👤 {{ request.user.username }}</span>
-                        <form method="post" action="{% url 'register:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-light btn-sm">Вийти</button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'register:login' %}" class="btn btn-light btn-sm">Увійти</a>
-                    {% endif %}
-                </nav>
-            </div>
-        </header>
+        {% if request.user.is_authenticated %}
+          <span class="me-2 text-dark">👤 {{ request.user.username }}</span>
+          <form method="post" action="{% url 'register:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm">Вийти</button>
+          </form>
+        {% else %}
+          <a href="{% url 'register:login' %}" class="btn btn-primary btn-sm">Увійти</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
 
-    <main class="container my-4 flex-grow-1">
-        {% block content %}
-        {% endblock %}
-    </main>
+  <!-- Контент -->
+  <main class="container my-4 flex-grow-1">
+    {% block content %}
+    {% endblock %}
+  </main>
 
-    <!-- Футер -->
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
-        <div class="container">
-            <p class="mb-0">&copy; {{ now.year }} Усі права захищені.</p>
-        </div>
-    </footer>
+  <!-- Футер -->
+  <footer class="bg-white border-top text-center py-3 mt-auto">
+    <div class="container">
+      <p class="mb-0 text-muted">&copy; {{ now.year }} Усі права захищені.</p>
+    </div>
+  </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

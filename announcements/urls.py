@@ -8,10 +8,7 @@ app_name = "announcements"
 
 
 
-
 urlpatterns = [
-    path("announcements/", views.announcement_list, name="list"),
+    path("announcements/", views.announcement_list, name="announcement_list"),  # ← виправлено
     path("announcements/create/", views.announcement_create, name="announcement_create"),
-
-
 ]
