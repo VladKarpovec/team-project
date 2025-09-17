@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Видалити подію{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <h3 class="card-title">Видалити подію "{{ event.title }}"?</h3>
+        <p>Цю дію неможливо скасувати.</p>
+
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Так, видалити</button>
+            <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-secondary">Скасувати</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

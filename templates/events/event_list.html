@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Календар подій{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Календар подій</h2>
+    {% if request.user.is_staff %}
+        <a href="{% url 'events:event_create' %}" class="btn btn-primary">➕ Створити подію</a>
+    {% endif %}
+    <a href="{% url 'events:event_calendar' %}" class="btn btn-primary">Календар</a>
+</div>
+
+{% if events %}
+    <div class="list-group">
+        {% for event in events %}
+            <a href="{% url 'events:event_detail' event.pk %}" class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">{{ event.title }}</h5>
+                    <small>{{ event.date }}</small>
+                </div>
+                <p class="mb-1 text-muted">{{ event.description|truncatewords:15 }}</p>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">Подій поки немає.</div>
+{% endif %}
+{% endblock %}

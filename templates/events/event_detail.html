@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <h3 class="card-title">{{ event.title }}</h3>
+        <p class="card-text">{{ event.description }}</p>
+        <p class="text-muted">📅 {{ event.date }}</p>
+
+        {% if request.user.is_staff %}
+            <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-warning me-2">✏️ Редагувати</a>
+            <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger">🗑️ Видалити</a>
+        {% endif %}
+        <a href="{% url 'events:event_list' %}" class="btn btn-secondary float-end">← Назад</a>
+    </div>
+</div>
+{% endblock %}
