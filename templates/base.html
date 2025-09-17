@@ -1,57 +1,143 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Головна{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>{% block title %}Головна{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Іконки -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f4f6f9, #e9eef5);
+      color: #333;
+    }
+
+    /* Хедер */
+    header {
+      background: linear-gradient(90deg, #0066ff, #00c6ff);
+    }
+    header h1 {
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    header nav a {
+      font-weight: 600;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    header nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: #fff;
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+    header nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Кнопки */
+    .btn-custom {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    /* Футер */
+    footer {
+      background: linear-gradient(90deg, #1f1f1f, #2d2d2d);
+      font-size: 0.9rem;
+    }
+
+    /* Карточки */
+    .card {
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    }
+
+    /* Основний контент */
+    main {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Хедер -->
-        <header class="bg-primary text-white py-3 shadow">
-            <div class="container d-flex justify-content-between align-items-center">
-                <h1 class="h4 mb-0">Шось там сайт</h1>
-                <nav class="d-flex align-items-center">
-                    <a href="{% url 'main:home' %}" class="text-white me-3 text-decoration-none">Головна</a>
-                    <a href="{% url 'forum:main' %}" class="text-white me-3 text-decoration-none">Форум</a>
-                    <a href="{% url 'voting:voting_list' %}" class="text-white me-3 text-decoration-none">Голосування</a>
-                    <a href="{% url 'portfolio:project_list' %}" class="text-white me-3 text-decoration-none">Портфоліо</a>
-                    <a href="{% url 'polls:survey_list' %}" class="text-white me-3 text-decoration-none">Опитування</a>
-                    <a href="{% url 'gallery:gallery' %}" class="text-white me-3 text-decoration-none">Галерея</a>
-                    <a href="{% url 'announcements:announcement_list' %}" class="text-white me-3 text-decoration-none">Оголошення</a>
-                    <a href="{% url 'diary:subjects' %}" class="text-white me-3 text-decoration-none">Щоденник</a>
-                    <a href="{% url 'events:event_list' %}" class="text-white me-3 text-decoration-none">Події</a>
-                    <a href="{% url 'materials:material_list' %}" class="text-white me-3 text-decoration-none">Матеріали</a>
-                    {% if request.user.is_authenticated %}
-                        <span class="me-3">👤 {{ request.user.username }}</span>
-                        <form method="post" action="{% url 'register:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-light btn-sm">Вийти</button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'register:login' %}" class="btn btn-light btn-sm">Увійти</a>
-                    {% endif %}
-                </nav>
-            </div>
-        </header>
+  <!-- Хедер -->
+  <header class="py-3 shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="h4 mb-0 text-white"><i class="bi bi-stars"></i> Шось там сайт</h1>
+      <nav class="d-flex align-items-center gap-3">
+        <a href="{% url 'main:home' %}" class="text-white text-decoration-none">Головна</a>
+        <a href="{% url 'forum:main' %}" class="text-white text-decoration-none">Форум</a>
+        <a href="{% url 'voting:voting_list' %}" class="text-white text-decoration-none">Голосування</a>
+        <a href="{% url 'portfolio:project_list' %}" class="text-white text-decoration-none">Портфоліо</a>
+        <a href="{% url 'polls:survey_list' %}" class="text-white text-decoration-none">Опитування</a>
+        <a href="{% url 'gallery:gallery' %}" class="text-white text-decoration-none">Галерея</a>
+        <a href="{% url 'announcements:announcement_list' %}" class="text-white text-decoration-none">Оголошення</a>
+        <a href="{% url 'diary:subjects' %}" class="text-white text-decoration-none">Щоденник</a>
+        <a href="{% url 'events:event_list' %}" class="text-white text-decoration-none">Події</a>
+        <a href="{% url 'materials:material_list' %}" class="text-white text-decoration-none">Матеріали</a>
 
-    <main class="container my-4 flex-grow-1">
-        {% block content %}
-        {% endblock %}
-    </main>
+        {% if request.user.is_authenticated %}
+          <span class="ms-3 text-white fw-bold">👤 {{ request.user.username }}</span>
+          <form method="post" action="{% url 'register:logout' %}" class="ms-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light btn-sm">Вийти</button>
+          </form>
+        {% else %}
+          <a href="{% url 'register:login' %}" class="btn btn-light btn-sm">Увійти</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
 
-    <!-- Футер -->
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
-        <div class="container">
-            <p class="mb-0">&copy; {{ now.year }} Усі права захищені.</p>
-        </div>
-    </footer>
+  <!-- Контент -->
+  <main class="container my-4 flex-grow-1">
+    {% block content %}
+    {% endblock %}
+  </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Футер -->
+  <footer class="text-white text-center py-3 mt-auto">
+    <div class="container">
+      <p class="mb-0">&copy; {{ now.year }}  Усі права захищені.</p>
+    </div>
+  </footer>
 
-    {% block scripts %}{% endblock %}
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>
