@@ -18,8 +18,17 @@
                             <span class="badge bg-secondary">{{ thread.posts.count }} Comments</span>
                         </div>
                     </div>
+
                     <p class="card-text mt-2">{{ thread.posts.first.content|truncatewords:30 }}</p>
-                    <a href="{% url 'forum:thread' thread.id %}" class="btn btn-sm btn-primary">View Thread</a>
+
+                    {# Теги #}
+                    {% if thread.tag %}
+                        <div class="mt-2 d-flex flex-wrap gap-2">
+                            <span class="badge bg-light text-dark border">{{ thread.tag }}</span>
+                        </div>
+                    {% endif %}
+
+                    <a href="{% url 'forum:thread' thread.id %}" class="btn btn-sm btn-primary mt-3">View Thread</a>
                 </div>
             </div>
             {% endfor %}
@@ -33,11 +42,10 @@
                 <button class="btn btn-secondary w-100 mb-3" disabled>Login to Start Discussion</button>
                 {% endif %}
                 <div class="d-flex flex-column gap-2">
-                    <a href="#" class="text-decoration-none text-muted">All Discussions</a>
-                    <a href="#" class="text-decoration-none text-muted">Following</a>
-                    <a href="#" class="text-decoration-none text-muted">Introductions</a>
-                    <a href="#" class="text-decoration-none text-muted">Announcements</a>
-                    <a href="#" class="text-decoration-none text-muted">Feedback</a>
+                    <a href="{% url 'forum:main' %}" class="text-decoration-none text-muted">All Discussions</a>
+                    <a href="{% url 'forum:main' %}?tag=folowing" class="text-decoration-none text-muted">Following</a>
+                    <a href="{% url 'forum:main' %}?tag=introduction" class="text-decoration-none text-muted">Introductions</a>
+                    <a href="{% url 'forum:main' %}?tag=feedback" class="text-decoration-none text-muted">Feedback</a>
                 </div>
             </div>
         </aside>

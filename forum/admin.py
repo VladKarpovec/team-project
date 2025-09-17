@@ -8,7 +8,7 @@ class ThreadAdmin(admin.ModelAdmin):
 
     def author(self, obj):
         first_post = obj.posts.first()
-        return obj.first_post.author if first_post else None
+        return first_post.author if first_post else None
 
 
 @admin.register(Post)

@@ -55,10 +55,12 @@ def add_grade(request, subject_id, class_id, student_id):
 
         if score and date_str:
             date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            score_value = None if score == "NA" else score
+
             Grade.objects.create(
                 student=student,
                 subject=subject,
-                score=score,
+                score=score_value,
                 date=date,
             )
 

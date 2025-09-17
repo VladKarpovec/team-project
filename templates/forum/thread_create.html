@@ -1,20 +1,42 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block title %}Create Thread{% endblock %}
 
 {% block content %}
-    <div class="container my-4">
-        <h1 class="mb-4">Create New Thread</h1>
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="title" class="form-label">Thread Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">Content</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Thread</button>
-        </form>
-    </div>
+<div class="container my-4">
+    <h1 class="mb-4">Create New Thread</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+
+        {# Заголовок треда #}
+        <div class="mb-3">
+            {{ thread_form.title.label_tag }}
+            {{ thread_form.title|add_class:"form-control" }}
+            {% for error in thread_form.title.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {# Тег #}
+        <div class="mb-3">
+            {{ thread_form.tag.label_tag }}
+            {{ thread_form.tag|add_class:"form-select" }}
+            {% for error in thread_form.tag.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {# Контент первого поста #}
+        <div class="mb-3">
+            {{ post_form.content.label_tag }}
+            {{ post_form.content|add_class:"form-control" }}
+            {% for error in post_form.content.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Thread</button>
+    </form>
+</div>
 {% endblock %}

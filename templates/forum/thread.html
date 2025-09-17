@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block title %}{{ thread.title }}{% endblock %}
 
 {% block content %}
@@ -43,13 +44,17 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
+
                 <label for="content" class="form-label">Add a comment:</label>
-                <textarea class="form-control mb-3" id="content" name="content" rows="3"
-                          placeholder="Write your comment here..."></textarea>
+                {{ post_form.content|add_class:"form-control mb-3" }}
+                {% for error in post_form.content.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+
                 {% if request.user.is_authenticated %}
                     <button type="submit" class="btn btn-primary">Post Comment</button>
                 {% else %}
-                    <button class="btn btn-secondary" disabled>Login to Comment</button>
+                    <button type="submit" class="btn btn-secondary" disabled>Login to Comment</button>
                 {% endif %}
             </form>
         </div>
