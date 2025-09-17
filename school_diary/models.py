@@ -35,7 +35,7 @@ class Student(models.Model):
 
 
 class Grade(models.Model):
-    SCORE_CHOICES = [(str(i), str(i)) for i in range(1, 13)] + [("H", "H")]
+    SCORE_CHOICES = [(str(i), str(i)) for i in range(1, 13)] + [("H", "H"), ("NA", "—")]
 
     student = models.ForeignKey(
         Student, related_name="grades", on_delete=models.CASCADE
@@ -43,5 +43,10 @@ class Grade(models.Model):
     subject = models.ForeignKey(
         Subject, related_name="grades", on_delete=models.CASCADE
     )
-    score = models.CharField(max_length=2, choices=SCORE_CHOICES)
+    score = models.CharField(
+        max_length=2,
+        choices=SCORE_CHOICES,
+        null=True,
+        blank=True,
+    )
     date = models.DateField()
