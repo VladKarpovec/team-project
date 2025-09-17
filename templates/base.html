@@ -23,6 +23,7 @@
                     <a href="{% url 'announcements:announcement_list' %}" class="text-white me-3 text-decoration-none">Оголошення</a>
                     <a href="{% url 'diary:subjects' %}" class="text-white me-3 text-decoration-none">Щоденник</a>
                     <a href="{% url 'events:event_list' %}" class="text-white me-3 text-decoration-none">Події</a>
+                    <a href="{% url 'materials:material_list' %}" class="text-white me-3 text-decoration-none">Матеріали</a>
                     {% if request.user.is_authenticated %}
                         <span class="me-3">👤 {{ request.user.username }}</span>
                         <form method="post" action="{% url 'register:logout' %}">

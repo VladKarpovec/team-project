@@ -10,6 +10,12 @@
     <a href="{% url 'events:event_calendar' %}" class="btn btn-primary">Календар</a>
 </div>
 
+{% if not request.user.is_authenticated %}
+  <div class="alert alert-warning mb-3">
+    🔒 Вам варто <a href="{% url 'register:login' %}">увійти</a> або <a href="{% url 'register:register' %}">зареєструватися</a>, щоб переглядати деталі подій.
+  </div>
+{% endif %}
+
 {% if events %}
     <div class="list-group">
         {% for event in events %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Матеріали{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Матеріали</h2>
+    {% if request.user.is_staff %}
+        <a href="{% url 'materials:material_create' %}" class="btn btn-primary">➕ Додати матеріал</a>
+    {% endif %}
+</div>
+
+{% if not request.user.is_authenticated %}
+  <div class="alert alert-warning mb-3">
+    🔒 Вам варто <a href="{% url 'register:login' %}">увійти</a> або <a href="{% url 'register:register' %}">зареєструватися</a>, щоб переглядати матеріали повністю.
+  </div>
+{% endif %}
+
+<div class="row g-3">
+    {% for m in materials %}
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ m.title }}</h5>
+                <p class="card-text">{{ m.description|truncatewords:20 }}</p>
+
+                {% if request.user.is_authenticated %}
+                    {% if m.material_type == 'file' %}
+                        <a href="{{ m.file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Завантажити файл</a>
+                    {% elif m.material_type == 'image' %}
+                        <img src="{{ m.file.url }}" alt="{{ m.title }}" class="img-fluid mt-2">
+                    {% elif m.material_type == 'youtube' %}
+                        <div class="ratio ratio-16x9 mt-2">
+                            <iframe src="https://www.youtube.com/embed/{{ m.url|slice:'https://www.youtube.com/watch?v=' }}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    {% elif m.material_type == 'link' %}
+                        <a href="{{ m.url }}" target="_blank" class="btn btn-outline-success btn-sm">Перейти за посиланням</a>
+                    {% endif %}
+                {% endif %}
+
+                {% if request.user.is_staff %}
+                    <div class="mt-2">
+                        <a href="{% url 'materials:material_edit' m.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+                        <a href="{% url 'materials:material_delete' m.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p class="text-muted">Немає матеріалів.</p>
+    {% endfor %}
+</div>
+{% endblock %}

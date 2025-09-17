@@ -16,8 +16,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Survey
 
 
-
-# 🔹 Перевірка ролей напряму у views
 def is_moderator_or_admin(user):
     if not user or not user.is_authenticated:
         return False
@@ -217,7 +215,6 @@ class SurveyUpdateView(UpdateView):
         return redirect(self.success_url)
 
 
-@method_decorator(login_required, name="dispatch")
 @method_decorator(login_required, name="dispatch")
 class SurveyDeleteView(View):
     def post(self, request, pk):

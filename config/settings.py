@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'announcements',
     'gallery',
     "school_diary",
-
+    'materials',
     'events',
     'polls',
 ]

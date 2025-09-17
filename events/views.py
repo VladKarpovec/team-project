@@ -6,7 +6,6 @@ from .forms import EventForm
 import calendar
 from datetime import date
 
-@login_required
 def event_list(request):
     events = Event.objects.all().order_by('date')
     return render(request, 'events/event_list.html', {'events': events})

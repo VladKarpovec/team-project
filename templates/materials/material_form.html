@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} матеріал{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        {% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} матеріал
+    </div>
+    <div class="card-body">
+        <form id="materialForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Назва</label>
+                {{ form.title }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Опис</label>
+                {{ form.description }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Тип матеріалу</label>
+                {{ form.material_type }}
+            </div>
+
+            <div class="mb-3" id="fileField" style="display:none;">
+                <label class="form-label">Файл / Зображення</label>
+                {{ form.file }}
+                <div id="previewFile" class="mt-2"></div>
+            </div>
+
+            <div class="mb-3" id="urlField" style="display:none;">
+                <label class="form-label">Посилання / YouTube URL</label>
+                {{ form.url }}
+                <div id="previewUrl" class="mt-2"></div>
+            </div>
+
+            <div class="mt-2">
+                <button type="submit" class="btn btn-success">Зберегти</button>
+                <a href="{% url 'materials:material_list' %}" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.getElementById('id_material_type');
+    const fileField = document.getElementById('fileField');
+    const urlField = document.getElementById('urlField');
+    const fileInput = document.getElementById('id_file');
+    const urlInput = document.getElementById('id_url');
+    const previewFile = document.getElementById('previewFile');
+    const previewUrl = document.getElementById('previewUrl');
+    const form = document.getElementById('materialForm');
+
+    // --- Витягування ID з YouTube URL ---
+    function getYouTubeId(url) {
+        const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/;
+        const match = url.match(regExp);
+        return match ? match[1] : null;
+    }
+
+    // --- Перемикання між типами ---
+    function updateFields() {
+        const type = typeSelect.value;
+        previewFile.innerHTML = '';
+        previewUrl.innerHTML = '';
+        fileInput.value = '';
+        urlInput.value = '';
+
+        if(type === 'file' || type === 'image') {
+            fileField.style.display = 'block';
+            fileInput.disabled = false;
+            urlField.style.display = 'none';
+            urlInput.disabled = true;
+        } else if(type === 'youtube' || type === 'link') {
+            fileField.style.display = 'none';
+            fileInput.disabled = true;
+            urlField.style.display = 'block';
+            urlInput.disabled = false;
+        } else {
+            fileField.style.display = 'none';
+            fileInput.disabled = true;
+            urlField.style.display = 'none';
+            urlInput.disabled = true;
+        }
+    }
+
+    typeSelect.addEventListener('change', updateFields);
+    updateFields();
+
+    // --- Попередній перегляд файлу / зображення ---
+    fileInput.addEventListener('change', function() {
+        previewFile.innerHTML = '';
+        if(fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const type = typeSelect.value;
+
+            // Перевірка відповідності типу
+            if(type === 'image' && !file.type.startsWith('image/')) {
+                alert('Для цього типу можна завантажити тільки зображення.');
+                fileInput.value = '';
+                return;
+            }
+            if(type === 'file' && file.type.startsWith('image/')) {
+                alert('Для цього типу виберіть НЕ зображення.');
+                fileInput.value = '';
+                return;
+            }
+
+            if(file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.classList.add('img-fluid', 'mt-2');
+                img.style.maxHeight = "200px";
+                previewFile.appendChild(img);
+            } else {
+                previewFile.textContent = `Вибрано файл: ${file.name}`;
+            }
+        }
+    });
+
+    // --- Попередній перегляд URL / YouTube ---
+    urlInput.addEventListener('input', function() {
+        previewUrl.innerHTML = '';
+        const url = urlInput.value.trim();
+        const type = typeSelect.value;
+        if(type === 'youtube') {
+            const videoId = getYouTubeId(url);
+            if(videoId) {
+                const iframe = document.createElement('iframe');
+                iframe.width = "100%";
+                iframe.height = "315";
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+                previewUrl.appendChild(iframe);
+            }
+        } else if(type === 'link' && url) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = "_blank";
+            a.textContent = url;
+            previewUrl.appendChild(a);
+        }
+    });
+
+    // --- Валідація при відправці ---
+    form.addEventListener('submit', function(e) {
+        const type = typeSelect.value;
+        let valid = true;
+        let errorMsg = '';
+
+        if((type === 'file' || type === 'image') && !fileInput.value) {
+            valid = false;
+            errorMsg = 'Будь ласка, оберіть файл.';
+        }
+        if(type === 'image' && fileInput.files.length > 0 && !fileInput.files[0].type.startsWith('image/')) {
+            valid = false;
+            errorMsg = 'Для цього типу можна завантажити тільки зображення.';
+        }
+        if(type === 'file' && fileInput.files.length > 0 && fileInput.files[0].type.startsWith('image/')) {
+            valid = false;
+            errorMsg = 'Для цього типу виберіть НЕ зображення.';
+        }
+        if((type === 'youtube' || type === 'link') && !urlInput.value) {
+            valid = false;
+            errorMsg = 'Будь ласка, введіть посилання.';
+        }
+
+        if(!valid) {
+            e.preventDefault();
+            alert(errorMsg);
+        }
+    });
+});
+</script>
+
+{% endblock %}

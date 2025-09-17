@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}{{ material.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        {{ material.title }}
+    </div>
+    <div class="card-body">
+        <p>{{ material.description }}</p>
+
+        {% if material.material_type == 'file' %}
+            <a href="{{ material.file.url }}" target="_blank" class="btn btn-primary">Завантажити файл</a>
+        {% elif material.material_type == 'image' %}
+            <img src="{{ material.file.url }}" class="img-fluid">
+        {% elif material.material_type == 'youtube' %}
+            <div class="ratio ratio-16x9 mt-2">
+                <iframe src="https://www.youtube.com/embed/{{ material.url|slice:'https://www.youtube.com/watch?v=' }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        {% elif material.material_type == 'link' %}
+            <a href="{{ material.url }}" target="_blank" class="btn btn-success">Перейти за посиланням</a>
+        {% endif %}
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'materials:material_list' %}" class="btn btn-secondary btn-sm">Повернутись до матеріалів</a>
+        {% if request.user.is_staff %}
+            <div>
+                <a href="{% url 'materials:material_edit' material.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+                <a href="{% url 'materials:material_delete' material.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
