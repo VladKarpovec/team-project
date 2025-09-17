@@ -3,7 +3,7 @@ from .models import Announcement
 
 def announcement_list(request):
     announcements = Announcement.objects.order_by('-created_at')
-    return render(request, 'forum/announcement_list.html', {'announcements': announcements})
+    return render(request, 'announcements/announcement_list.html', {'announcements': announcements})
 
 def announcement_create(request):
     if request.method == 'POST':
