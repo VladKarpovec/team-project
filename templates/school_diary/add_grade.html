@@ -14,8 +14,9 @@
           <div class="mb-3">
             <label for="score" class="form-label">Оцінка</label>
             <select name="score" id="score" class="form-select" required>
+              <option value="NA">—</option>
               {% for grade in grade_choices %}
-                <option value="{{ grade }}">{{ grade }}</option>
+                  <option value="{{ grade }}">{{ grade }}</option>
               {% endfor %}
             </select>
           </div>

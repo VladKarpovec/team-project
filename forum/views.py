@@ -1,55 +1,71 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Thread, Post
+from .forms import ThreadForm, PostForm
 
 
 # Create your views here.
 def thread_list(request):
-    threads = Thread.objects.all()
+    tag = request.GET.get("tag")
+    if tag:
+        threads = Thread.objects.filter(tag=tag)
+    else:
+        threads = Thread.objects.all()
     return render(request, "forum/main.html", context={"threads": threads})
 
 
 def thread_detail(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id)
 
-    if request.method == "GET":
-        context = {
-            "thread": thread,
-            "can_manage": can_manage_thread(request.user, thread),
-        }
-        return render(request, "forum/thread.html", context=context)
-    elif request.method == "POST":
-        text = request.POST.get("content")
-        if text:
-            post = Post.objects.create(
-                thread=thread,
-                content=text,
-                author=request.user,
-            )
+    if request.method == "POST":
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
+            post.thread = thread
+            post.author = request.user
+            post.save()
+            return redirect("forum:thread", thread_id=thread.id)
         else:
-            error = "Comment cannot be empty."
             return render(
                 request,
                 "forum/thread.html",
-                context={"thread": thread, "error": error},
+                context={"thread": thread, "post_form": post_form},
             )
-        return redirect("forum:thread", thread_id=thread.id)
+
+    else:
+        post_form = PostForm()
+        return render(
+            request,
+            "forum/thread.html",
+            context={"thread": thread, "post_form": post_form},
+        )
 
 
 def create_thread(request):
-    if request.method == "GET":
-        return render(request, "forum/thread_create.html")
-    elif request.method == "POST":
-        title = request.POST.get("title")
-        content = request.POST.get("content")
-
-        thread = Thread.objects.create(title=title)
-        post = Post.objects.create(
-            thread=thread,
-            content=content,
-            author=request.user,
-            is_first=True,
+    if request.method == "POST":
+        thread_form = ThreadForm(request.POST)
+        post_form = PostForm(request.POST)
+        if thread_form.is_valid() and post_form.is_valid():
+            thread = thread_form.save()
+            post = post_form.save(commit=False)
+            post.thread = thread
+            post.author = request.user
+            post.is_first = True
+            post.save()
+            return redirect("forum:thread", thread_id=thread.id)
+        else:
+            return render(
+                request,
+                "forum/thread_create.html",
+                context={"thread_form": thread_form, "post_form": post_form},
+            )
+    else:
+        thread_form = ThreadForm()
+        post_form = PostForm()
+        return render(
+            request,
+            "forum/thread_create.html",
+            context={"thread_form": thread_form, "post_form": post_form},
         )
-        return redirect("forum:thread", thread_id=thread.id)
 
 
 def can_manage_thread(user, thread):

@@ -7,6 +7,12 @@ class Thread(models.Model):
     title = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    TAGS_CHOICES = [
+        ("folowing", "Following"),
+        ("introduction", "Introduction"),
+        ("feedback", "Feedback"),
+    ]
+    tag = models.CharField(max_length=20, choices=TAGS_CHOICES, null=True, blank=True)
 
     class Meta:
         ordering = ["-created_at"]
